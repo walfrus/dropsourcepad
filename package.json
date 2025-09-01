@@ -3,30 +3,17 @@
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.56.1",
     "dexie": "^4.2.0",
-    "next": "^14.2.32",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "next": "14.2.12",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@types/react": "^18.2.70",
-    "@types/react-dom": "^18.2.24",
+    "@types/react": "18.2.70",
+    "@types/react-dom": "18.2.24",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.12"
-  },
-  "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "target": "ES2020",
-    "jsx": "preserve",
-    "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
   },
   "scripts": {
     "dev": "next dev",
