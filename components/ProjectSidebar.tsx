@@ -31,10 +31,11 @@ export default function ProjectSidebar() {
 
   return (
     <aside className="w-72 shrink-0 border-r border-neutral-800 p-3 bg-neutral-900/40">
-      <div className="flex gap-2">
+      <div className="mb-6 flex gap-2">
         <input
-          className="flex-1 rounded bg-neutral-800 px-2 py-1 outline-none"
+          type="text"
           placeholder="New project title"
+          className="flex-1 rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-2 text-sm placeholder-neutral-500 focus:border-brand focus:ring-1 focus:ring-brand/40"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           onKeyDown={(e) => {
@@ -42,7 +43,7 @@ export default function ProjectSidebar() {
           }}
         />
         <button
-          className="rounded bg-sky-500/80 px-3 py-1 hover:bg-sky-500 transition disabled:opacity-60 disabled:cursor-not-allowed"
+          className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-black hover:bg-brand/80 disabled:opacity-60 disabled:cursor-not-allowed"
           onClick={handleAdd}
           disabled={!title.trim() || adding}
         >
@@ -66,8 +67,8 @@ export default function ProjectSidebar() {
             return (
               <li key={(p as any).id ?? `p-${idx}`}>
                 <button
-                  className={`w-full text-left px-2 py-1 rounded hover:bg-neutral-800 ${
-                    isActive ? "bg-neutral-800 ring-1 ring-sky-500/40" : ""
+                  className={`w-full text-left rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4 shadow-sm hover:border-brand/50 ${
+                    isActive ? "ring-1 ring-brand/40" : ""
                   } ${!canSelect ? "opacity-60 cursor-not-allowed" : ""}`}
                   onClick={() => {
                     if (!canSelect) return;
@@ -75,7 +76,7 @@ export default function ProjectSidebar() {
                     setActive(p.id);
                   }}
                 >
-                  <div className="text-sm truncate">{p.title}</div>
+                  <h2 className="mb-1 text-sm font-semibold truncate">{p.title}</h2>
                   <div className="text-xs text-neutral-400">{ts}</div>
                 </button>
               </li>

@@ -18,26 +18,29 @@ export default function Home() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="rounded border border-neutral-800 p-3 bg-neutral-900/40">
-            <div className="text-sm text-neutral-400 mb-2">BPM</div>
-            {/* Placeholder for BPM input */}
+          <div>
+            <label className="block text-xs font-medium text-neutral-400">BPM</label>
             <input
               type="number"
               placeholder="Type BPM"
-              className="w-full rounded bg-neutral-900 p-2 outline-none"
+              className="w-full rounded border border-neutral-800 bg-neutral-900 px-2 py-1 focus:border-brand focus:ring-1 focus:ring-brand/40"
             />
           </div>
-          <div className="rounded border border-neutral-800 p-3 bg-neutral-900/40">
-            <div className="text-sm text-neutral-400 mb-2">Key</div>
-            {/* Placeholder for Key select */}
-            <select className="w-full rounded bg-neutral-900 p-2 outline-none" defaultValue="C">
-              {["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"].map(k=>(
-                <option key={k} value={k}>{k}</option>
+          <div>
+            <label className="block text-xs font-medium text-neutral-400">Key</label>
+            <select
+              className="w-full rounded border border-neutral-800 bg-neutral-900 px-2 py-1 focus:border-brand focus:ring-1 focus:ring-brand/40"
+              defaultValue="C"
+            >
+              {["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"].map((k) => (
+                <option key={k} value={k}>
+                  {k}
+                </option>
               ))}
             </select>
           </div>
-          <div className="rounded border border-neutral-800 p-3 bg-neutral-900/40">
-            <div className="text-sm text-neutral-400 mb-2">Audio</div>
+          <div>
+            <label className="block text-xs font-medium text-neutral-400 mb-1">Audio</label>
             <AudioRecorder />
           </div>
         </div>

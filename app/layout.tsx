@@ -13,7 +13,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="bg-neutral-950 text-neutral-100 font-sans antialiased">
+        <div className="container mx-auto max-w-6xl px-4 py-8">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

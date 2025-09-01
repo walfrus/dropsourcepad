@@ -35,21 +35,22 @@ export default function LyricEditor() {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between text-sm text-neutral-400 mb-2">
-        <span>Lyrics / Notes</span>
-        <span>
-          Syllables: {syllables}
-          {saving && <span className="ml-2 text-xs">(saving…)</span>}
-        </span>
-      </div>
+    <div className="mt-6 flex flex-col h-full">
+      <label className="block text-xs font-medium text-neutral-400 mb-1">
+        Lyrics / Notes
+      </label>
       <textarea
-        className="flex-1 w-full resize-none rounded bg-neutral-900 p-3 outline-none focus:ring-1 focus:ring-sky-500/40"
+        rows={8}
+        className="flex-1 w-full resize-none rounded-xl border border-neutral-800 bg-neutral-900 p-3 font-mono text-sm focus:border-brand focus:ring-1 focus:ring-brand/40"
         placeholder="write your idea..."
         value={text}
         onChange={(e) => setText(e.target.value)}
         onBlur={handleSave}
       />
+      <div className="mt-1 text-xs text-neutral-500">
+        Syllables: {syllables}
+        {saving && <span className="ml-2 text-xs">(saving…)</span>}
+      </div>
     </div>
   );
 }
