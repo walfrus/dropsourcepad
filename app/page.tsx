@@ -1,8 +1,8 @@
 // app/page.tsx
-import { GoogleButton } from "@/components/GoogleButton";
-import ProjectSidebar from "@/components/ProjectSidebar";
-import LyricEditor from "@/components/LyricEditor";
-import AudioRecorder from "@/components/AudioRecorder";
+import { GoogleButton } from "../components/GoogleButton";
+import ProjectSidebar from "../components/ProjectSidebar";
+import LyricEditor from "../components/LyricEditor";
+import AudioRecorder from "../components/AudioRecorder";
 
 export default function Home() {
   return (
