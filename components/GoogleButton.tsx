@@ -1,7 +1,7 @@
 // components/GoogleButton.tsx
 "use client";
-import { useEffect, useState } from "react";
 import { sb } from "@/lib/supabase";
+import { useEffect, useState } from "react";
 
 export function GoogleButton() {
   const s = sb();

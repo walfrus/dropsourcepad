@@ -15,3 +15,11 @@ export function sbServer() {
     }
   );
 }
+
+export async function requireUser() {
+  const s = sbServer();
+  const { data: { user }, error } = await s.auth.getUser();
+  if (error) throw new Error(`auth-failed:${error.message}`);
+  if (!user) throw new Error("unauthenticated");
+  return user;
+}

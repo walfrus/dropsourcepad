@@ -6,12 +6,12 @@ import AudioRecorder from "@/components/AudioRecorder";
 
 export default function Home() {
   return (
-    <main className="flex h-screen">
+    <main className="flex h-dvh">
       {/* Sidebar for project navigation */}
       <ProjectSidebar />
 
       {/* Main content */}
-      <section className="flex-1 p-6 space-y-6">
+      <section className="flex-1 p-6 space-y-6 overflow-y-auto">
         <header className="flex justify-between items-center">
           <h1 className="text-xl font-semibold">DropSource — Song Sketchpad</h1>
           <GoogleButton />
