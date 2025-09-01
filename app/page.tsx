@@ -6,7 +6,12 @@ import AudioRecorder from "../components/AudioRecorder";
 import { useProjects } from "../store/useProjects";
 
 export default function Home() {
-  const { activeProject, setProjectMeta } = useProjects();
+  const { activeId, projects, setProjectMeta } = useProjects((s) => ({
+    activeId: s.activeId,
+    projects: s.projects,
+    setProjectMeta: s.setProjectMeta,
+  }));
+  const active = projects.find((p) => p.id === activeId);
 
   return (
     <main className="flex h-dvh">
@@ -27,16 +32,21 @@ export default function Home() {
               type="number"
               placeholder="Type BPM"
               className="w-full rounded border border-neutral-800 bg-neutral-900 px-2 py-1 focus:border-brand focus:ring-1 focus:ring-brand/40"
-              value={activeProject()?.bpm ?? ""}
-              onChange={(e) => { if (activeProject()) setProjectMeta(activeProject()!.id!, { bpm: Number(e.target.value) || null }); }}
+              value={active?.bpm ?? ""}
+              onChange={(e) => {
+                const v = e.currentTarget.value === "" ? null : Number(e.currentTarget.value);
+                if (active?.id != null) setProjectMeta(active.id, { bpm: v });
+              }}
             />
           </div>
           <div>
             <label className="block text-xs font-medium text-neutral-400">Key</label>
             <select
               className="w-full rounded border border-neutral-800 bg-neutral-900 px-2 py-1 focus:border-brand focus:ring-1 focus:ring-brand/40"
-              value={activeProject()?.song_key ?? "C"}
-              onChange={(e) => { if (activeProject()) setProjectMeta(activeProject()!.id!, { song_key: e.target.value }); }}
+              value={active?.song_key ?? "C"}
+              onChange={(e) => {
+                if (active?.id != null) setProjectMeta(active.id, { song_key: e.currentTarget.value });
+              }}
             >
               {["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"].map((k) => (
                 <option key={k} value={k}>
