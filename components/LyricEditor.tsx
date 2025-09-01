@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useProjects } from "@/store/useProjects";
+import { useProjects } from "../store/useProjects";
 
 export default function LyricEditor() {
   const { activeId, getNotesFor, saveNote } = useProjects();

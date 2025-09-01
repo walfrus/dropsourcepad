@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useProjects } from "@/store/useProjects";
+import { useProjects } from "../store/useProjects";
 
 export default function ProjectSidebar() {
   const { projects, activeId, setActive, addProject, loadAll } = useProjects();

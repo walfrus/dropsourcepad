@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { db, Project, Note, Clip } from "@/lib/db";
+import { db, Project, Note, Clip } from "../lib/db";
 
 type State = {
   projects: Project[];
@@ -42,12 +42,12 @@ export const useProjects = create<State>((set, get) => ({
     await get().loadAll();
   },
   addClip: async (projectId, clip) => {
-    await db.clips.add(clip);
+    await db.clips.add({ ...clip, projectId });
     await db.projects.update(projectId, { updatedAt: Date.now() });
     await get().loadAll();
   },
   getNotesFor: async (projectId) =>
     db.notes.where({ projectId }).first(),
   getClipsFor: async (projectId) =>
-    db.clips.where({ projectId }).reverse().sortBy("createdAt"),
+    db.clips.where({ projectId }).sortBy("createdAt").then(list => list.reverse()),
 }));
