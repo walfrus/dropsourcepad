@@ -22,7 +22,7 @@ export function GoogleButton() {
       onClick={() =>
         s.auth.signInWithOAuth({
           provider: "google",
-          options: { redirectTo: location.origin },
+          options: { redirectTo: `${location.origin}/` }
         })
       }
     >
