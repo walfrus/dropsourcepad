@@ -3,8 +3,11 @@ import { GoogleButton } from "../components/GoogleButton";
 import ProjectSidebar from "../components/ProjectSidebar";
 import LyricEditor from "../components/LyricEditor";
 import AudioRecorder from "../components/AudioRecorder";
+import { useProjects } from "../store/useProjects";
 
 export default function Home() {
+  const { activeProject, setProjectMeta } = useProjects();
+
   return (
     <main className="flex h-dvh">
       {/* Sidebar for project navigation */}
@@ -24,13 +27,16 @@ export default function Home() {
               type="number"
               placeholder="Type BPM"
               className="w-full rounded border border-neutral-800 bg-neutral-900 px-2 py-1 focus:border-brand focus:ring-1 focus:ring-brand/40"
+              value={activeProject()?.bpm ?? ""}
+              onChange={(e) => { if (activeProject()) setProjectMeta(activeProject()!.id!, { bpm: Number(e.target.value) || null }); }}
             />
           </div>
           <div>
             <label className="block text-xs font-medium text-neutral-400">Key</label>
             <select
               className="w-full rounded border border-neutral-800 bg-neutral-900 px-2 py-1 focus:border-brand focus:ring-1 focus:ring-brand/40"
-              defaultValue="C"
+              value={activeProject()?.song_key ?? "C"}
+              onChange={(e) => { if (activeProject()) setProjectMeta(activeProject()!.id!, { song_key: e.target.value }); }}
             >
               {["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"].map((k) => (
                 <option key={k} value={k}>

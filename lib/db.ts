@@ -3,8 +3,8 @@ import Dexie, { Table } from "dexie";
 export type Project = {
   id?: number;
   title: string;
-  bpm?: number;
-  key?: string;
+  bpm?: number | null;
+  song_key?: string | null;
   createdAt: number;
   updatedAt: number;
 };
