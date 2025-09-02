@@ -48,19 +48,23 @@ function AudioRecorder() {
     if (recording) return;
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mime =
-        typeof MediaRecorder !== "undefined" &&
-        MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
-          ? "audio/webm;codecs=opus"
-          : "audio/webm";
+      let mime = "audio/webm;codecs=opus";
+      let recorder: MediaRecorder;
 
-      const mr = new MediaRecorder(stream, { mimeType: mime });
+      // Attempt to create MediaRecorder with opus codec, fallback to generic webm
+      try {
+        recorder = new MediaRecorder(stream, { mimeType: mime });
+      } catch {
+        mime = "audio/webm";
+        recorder = new MediaRecorder(stream, { mimeType: mime });
+      }
+
       chunksRef.current = [];
-      mr.ondataavailable = (e) => {
+      recorder.ondataavailable = (e) => {
         if (e.data && e.data.size > 0) chunksRef.current.push(e.data);
       };
-      mr.onstop = async () => {
-        const blob = new Blob(chunksRef.current, { type: "audio/webm" });
+      recorder.onstop = async () => {
+        const blob = new Blob(chunksRef.current, { type: mime });
         const durationMs = Date.now() - startMsRef.current;
 
         // Instant preview
@@ -73,14 +77,14 @@ function AudioRecorder() {
         if (activeId != null) {
           setSaving(true);
           try {
-            await addClip(activeId as number, {
-              projectId: activeId as number,
+            await addClip(activeId, {
+              projectId: activeId,
               blob,
               durationMs,
               createdAt: Date.now(),
             });
-            const list = await getClipsFor(activeId as number);
-            setClips(list);
+            const list = await getClipsFor(activeId);
+            setClips(list ?? []);
           } catch (err) {
             console.error("clip save failed", err);
           } finally {
@@ -93,8 +97,8 @@ function AudioRecorder() {
       };
 
       startMsRef.current = Date.now();
-      mr.start();
-      mrRef.current = mr;
+      recorder.start();
+      mrRef.current = recorder;
       setRecording(true);
     } catch (err) {
       console.error("microphone error:", err);
@@ -109,6 +113,15 @@ function AudioRecorder() {
     } finally {
       setRecording(false);
     }
+  }
+
+  // Guard for empty project
+  if (!activeId) {
+    return (
+      <div className="rounded border border-neutral-800 bg-neutral-900/40 p-3 text-sm text-neutral-400">
+        Select or create a project to record audio.
+      </div>
+    );
   }
 
   return (
@@ -148,7 +161,7 @@ function AudioRecorder() {
             const url = URL.createObjectURL(c.blob);
             const secs = Math.max(1, Math.round((c.durationMs ?? 0) / 1000));
             return (
-              <div key={c.id} className="rounded-lg border border-neutral-800 bg-neutral-900/60 p-2">
+              <div key={c.id ?? `${c.createdAt}-${c.durationMs}`} className="rounded-lg border border-neutral-800 bg-neutral-900/60 p-2">
                 <div className="mb-1 text-xs text-neutral-400">
                   {new Date(c.createdAt).toLocaleTimeString()} • {secs}s
                 </div>

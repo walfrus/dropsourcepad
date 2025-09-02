@@ -1,17 +1,26 @@
 // app/page.tsx
+"use client";
 import { GoogleButton } from "../components/GoogleButton";
 import ProjectSidebar from "../components/ProjectSidebar";
 import LyricEditor from "../components/LyricEditor";
 import AudioRecorder from "../components/AudioRecorder";
 import { useProjects } from "../store/useProjects";
+import { useEffect } from "react";
+
 
 export default function Home() {
-  const { activeId, projects, setProjectMeta } = useProjects((s) => ({
+  const { loadAll, activeId, projects, setProjectMeta } = useProjects((s) => ({
+    loadAll: s.loadAll,
     activeId: s.activeId,
     projects: s.projects,
     setProjectMeta: s.setProjectMeta,
   }));
   const active = projects.find((p) => p.id === activeId);
+
+  // Load projects on first mount
+  useEffect(() => {
+    loadAll();
+  }, [loadAll]);
 
   return (
     <main className="flex h-dvh">

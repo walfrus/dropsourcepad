@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
 import { useProjects } from "../store/useProjects";
+import { useEffect, useState } from "react";
 
 export default function LyricEditor() {
   const { activeId, getNotesFor, saveNote } = useProjects();
@@ -22,7 +22,18 @@ export default function LyricEditor() {
     };
   }, [activeId, getNotesFor]);
 
-  const syllables = (text.match(/[aeiouy]+/gi) ?? []).length;
+  useEffect(() => {
+    if (!activeId) return;
+    setSaving(true);
+    const t = setTimeout(async () => {
+      try {
+        await saveNote(activeId, text);
+      } finally {
+        setSaving(false);
+      }
+    }, 500);
+    return () => clearTimeout(t);
+  }, [text, activeId, saveNote]);
 
   async function handleSave() {
     if (!activeId) return;
@@ -32,6 +43,27 @@ export default function LyricEditor() {
     } finally {
       setSaving(false);
     }
+  }
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        handleSave();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activeId, text]);
+
+  const syllables = (text.match(/[aeiouy]+/gi) ?? []).length;
+
+  // Guard for empty project
+  if (!activeId) {
+    return (
+      <div className="mt-6 rounded-xl border border-neutral-800 bg-neutral-900/40 p-4 text-sm text-neutral-400">
+        Select or create a project to start writing.
+      </div>
+    );
   }
 
   return (

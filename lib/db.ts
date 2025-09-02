@@ -12,7 +12,7 @@ export type Project = {
 export type Clip = {
   id?: number;
   projectId: number;
-  blob: Blob;          // audio
+  blob: Blob;
   durationMs: number;
   createdAt: number;
 };

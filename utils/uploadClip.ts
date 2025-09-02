@@ -3,7 +3,7 @@
  * Uploads an audio Blob to the private `clips` bucket, then inserts a row in `clips`.
  * Returns the inserted DB row (not a signed URL).
  */
-import { sb } from "@/lib/supabase";
+import { sb } from "../lib/supabase";
 
 export type ClipRow = {
   id: string;
@@ -47,8 +47,8 @@ export async function uploadClip(
   }
 
   // 2) insert DB row
-  const { data, error } = await s
-    .from("clips")
+  const clipsTable = s.from("clips") as any;
+  const { data, error } = await clipsTable
     .insert({
       id: clipId,
       project_id: projectId,

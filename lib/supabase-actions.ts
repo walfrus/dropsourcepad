@@ -1,5 +1,5 @@
 // lib/supabase-actions.ts
-import { sb } from "@/lib/supabase";
+import { sb } from "./supabase";
 
 export type ProjectRow = {
   id: string;
@@ -46,11 +46,8 @@ export async function createProject(
   const user = userData.user;
   if (!user) throw new Error("unauthenticated");
 
-  const { data, error } = await s
-    .from("projects")
-    .insert({ user_id: user.id, title, bpm, song_key })
-    .select("*")
-    .single();
+  const projectsTable = s.from("projects") as any;
+  const { data, error } = await projectsTable.insert({ user_id: user.id, title, bpm, song_key }).select("*").single();
 
   if (error) {
     if (error.code === "42501") throw new Error("forbidden:policy");
@@ -58,9 +55,8 @@ export async function createProject(
     throw new Error(`insert-failed:${error.message}`);
   }
 
-  await s
-    .from("notes")
-    .upsert({ project_id: data.id, content: "" }, { onConflict: "project_id", ignoreDuplicates: true });
+  const notesTable = s.from("notes") as any;
+  await notesTable.upsert({ project_id: data.id, content: "" }, { onConflict: "project_id", ignoreDuplicates: true });
 
   return data as ProjectRow;
 }
